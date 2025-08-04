@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: Microservicio de Recordatorios
+  description: API REST para gestionar recordatorios relacionados con alimentación y música.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+
+paths:
+  /recordatorios:
+    post:
+      summary: Crear un nuevo recordatorio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoRecordatorio'
+      responses:
+        '201':
+          description: Recordatorio creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaCreacion'
+
+    get:
+      summary: Obtener todos los recordatorios
+      responses:
+        '200':
+          description: Lista de recordatorios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NuevoRecordatorio'
+
+  /recordatorios/{id}:
+    put:
+      summary: Actualizar un recordatorio existente
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID del recordatorio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoRecordatorio'
+      responses:
+        '200':
+          description: Recordatorio actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Recordatorio actualizado correctamente."
+
+    delete:
+      summary: Eliminar un recordatorio por ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID del recordatorio
+      responses:
+        '200':
+          description: Recordatorio eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Recordatorio eliminado correctamente."
+
+components:
+  schemas:
+    NuevoRecordatorio:
+      type: object
+      required:
+        - usuarioId
+        - tipo
+        - mensaje
+        - fechaHora
+      properties:
+        usuarioId:
+          type: string
+          example: "USR001"
+        tipo:
+          type: string
+          enum: [alimentacion, musica]
+          example: "alimentacion"
+        mensaje:
+          type: string
+          example: "¡Es hora de beber agua!"
+        fechaHora:
+          type: string
+          format: date-time
+          example: "2025-06-09T08:00:00Z"
+
+    RespuestaCreacion:
+      type: object
+      properties:
+        mensaje:
+          type: string
+          example: "Recordatorio creado correctamente"
+        data:
+          $ref: '#/components/schemas/NuevoRecordatorio'

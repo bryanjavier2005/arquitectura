@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+.env.enc
+*.pem
+*.csr
+.vscode
+*.log

@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  ms_recordatorios:
+    build: .
+    container_name: ms_recordatorios
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src/cert.pem:/app/src/cert.pem:ro
+      - ./src/key.pem:/app/src/key.pem:ro
+      - ./src/.env.enc:/app/src/.env.enc:ro
+    environment:
+      - NODE_ENV=production
